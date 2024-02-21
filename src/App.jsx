@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import "./App.css";
 import Menu from "./Menu";
 import Project from "./Project";
+import Notifications from "./Notifications";
 
 const randomID = () => {
   let id = Math.random().toString(36).substring(2);
@@ -18,7 +19,7 @@ if (!projectsArray) {
         {
           title: "Default To-Do",
           desc: "This is a default To-Do",
-          date: Date.now().toLocaleString(),
+          date: new Date().getTime(),
           priority: "low",
           ToDoID: randomID(),
         },
@@ -32,25 +33,65 @@ projectsArray = JSON.parse(localStorage.getItem("projects"));
 
 export const ProjectsContext = createContext();
 
-
 function App() {
   const [projects, setProjects] = useState(projectsArray);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
     saveData(); // saving data to local storage on project changes
   }, [projects]);
 
+  useEffect(()=>{
+    // set up for notifications
+  for (let project of projects) {
+    for (let todo of project.toDos) {
+      let notification;
+      if (Date.parse(todo.date) < Date.now()) {
+        // if the date is in the past
+        notification = {
+          id: randomID(),
+          todo: todo.title,
+          project: project.name,
+          status: "overdue",
+        };
+      } else if (
+        // if the date is within the next week
+        Date.parse(todo.date) <
+        Date.now() + 7 * 24 * 60 * 60 * 1000
+      ) {
+        notification = {
+          id: randomID(),
+          todo: todo.title,
+          project: project.name,
+          status: "due-soon",
+        };
+      }
+      if (notification) { // prevent notification from being duplicated by react's re-rendering
+        let notificationExist = notifications.some(note => note.todo === notification.todo && note.project === notification.project);
+        if(!notificationExist) {
+          let newNotifications = notifications;
+          newNotifications.push(notification);
+          setNotifications(newNotifications);
+          console.log('notification added')
+        }
+      }
+    }
+  }
+  }, [])
+
+
   const saveData = () => {
     localStorage.setItem("projects", JSON.stringify(projects));
-    console.log("Data saved: " + projects);
-  }
+  };
 
   return (
     <>
       <ProjectsContext.Provider
-        value={{ projects, setProjects, randomID, saveData }}
+        value={{ projects, setProjects, randomID, saveData, notifications, setNotifications, notificationsOpen, setNotificationsOpen}}
       >
         <Menu></Menu>
+        <Notifications></Notifications>
         {projects.map((item, index) => (
           <Project project={item} key={index}></Project>
         ))}
