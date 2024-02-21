@@ -113,7 +113,7 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
             }}
           ></input>
         ) : (
-          <span className="text-lg">{toDoTitle}</span>
+          <span className="w-[90%] text-lg text-ellipsis text-left whitespace-nowrap overflow-hidden">{toDoTitle}</span>
         )}
       </div>
       {open && (

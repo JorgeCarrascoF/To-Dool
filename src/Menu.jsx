@@ -1,28 +1,30 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { ProjectsContext } from "./App";
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
   const [creatingProject, setCreatingProject] = useState(false);
-  const {projects, setProjects, randomID} = useContext(ProjectsContext);
+  const { projects, setProjects, randomID, notifications, setNotificationsOpen } = useContext(ProjectsContext);
 
   const [newProjectName, setNewProjectName] = useState("");
 
-
-  
-
   const createNewProject = () => {
-    let newProject = {name: newProjectName, id: randomID(), toDos: []};
+    let newProject = { name: newProjectName, id: randomID(), toDos: [] };
     setProjects([...projects, newProject]);
-    setNewProjectName('');
+    setNewProjectName("");
     setCreatingProject(false);
   };
+
 
   return (
     <div
       className={`bg-white text-black z-30 shadow-md rounded-2xl fixed left-5 top-5 ${
-        !open ? "h-[50px] w-[50px]" : creatingProject ? 'h-[195px] w-[200px]' :  "h-[152px] w-[200px]"
+        !open
+          ? "h-[50px] w-[50px]"
+          : creatingProject
+          ? "h-[250px] w-[200px]"
+          : "h-[200px] w-[200px]"
       } transition-all duration-500 items-start cursor-pointer flex flex-col overflow-hidden`}
     >
       <div className="absolute left-[8px] top-[8px]  flex flex-row justify-evenly items-center overflow-hidden">
@@ -60,9 +62,8 @@ const Menu = () => {
         </span>
       </div>
       {creatingProject && (
-        <div className="min-w-[140px] mt-2 ml-3 hover:bg-[#d3d3d37c] border-2 rounded-3xl pr-3  h-4 py-4 pl-[14px] flex items-center">
+        <div className="min-w-[140px] my-2 ml-3 hover:bg-[#d3d3d37c] border-2 rounded-3xl pr-3  h-4 py-4 pl-[14px] flex items-center">
           <input
-
             onChange={(e) => {
               setNewProjectName(e.target.value);
             }}
@@ -83,7 +84,7 @@ const Menu = () => {
           <svg
             onClick={() => {
               setCreatingProject(false);
-              setNewProjectName('');
+              setNewProjectName("");
             }}
             className="h-4"
             xmlns="http://www.w3.org/2000/svg"
@@ -94,6 +95,17 @@ const Menu = () => {
           </svg>
         </div>
       )}
+      <div onClick={()=>{setNotificationsOpen(true)}} className="min-w-[200px] select-none hover:bg-[#d3d3d37c] h-4 py-6 pl-[14px] flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 mr-4"
+          viewBox="0 0 24 24"
+        >
+          <title>Notifications</title>
+          <path d="M10 21H14C14 22.1 13.1 23 12 23S10 22.1 10 21M21 19V20H3V19L5 17V11C5 7.9 7 5.2 10 4.3V4C10 2.9 10.9 2 12 2S14 2.9 14 4V4.3C17 5.2 19 7.9 19 11V17L21 19M17 11C17 8.2 14.8 6 12 6S7 8.2 7 11V18H17V11Z" />
+        </svg>
+        Notifications {notifications.length > 0 ? `(${notifications.length})` : ''}
+      </div>
 
       <div className="min-w-[200px] select-none hover:bg-[#d3d3d37c] h-4 py-6 pl-[14px] flex items-center">
         <svg

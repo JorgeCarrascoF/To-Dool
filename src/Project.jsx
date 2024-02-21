@@ -44,7 +44,7 @@ const Project = ({ project }) => {
 
 
   return (
-    <div className="w-[340px] relative h-[420px] bg-white rounded-lg items-center select-none flex flex-col">
+    <div className="w-[340px] relative shadow-md  h-[420px] bg-white rounded-lg items-center select-none flex flex-col">
       <h1 className="text-xl mt-2 py-2 text-black border-b-2 w-[90%] mb-3">
         {name}
       </h1>
@@ -149,7 +149,7 @@ const Project = ({ project }) => {
         onClick={() => {
           setAddingToDo(!addingToDo);
         }}
-        className="border-2 text-black rounded-xl px-2 mb-4 py-1"
+        className="border-2 text-black rounded-xl px-2 my-4 py-1"
       >
         {!addingToDo ? "Add To-Do" : "Cancel"}
       </button>
