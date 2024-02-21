@@ -1,0 +1,10 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  padding: 2rem;
+  padding-left: 5rem;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
