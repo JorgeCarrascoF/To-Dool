@@ -12,19 +12,6 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
   const [toDoPriority, setToDoPriority] = useState(priority);
   const { projects, setProjects } = useContext(ProjectsContext);
 
-  let priorityColor = "";
-  switch (priority) {
-    case "low":
-      priorityColor = "00ca4e";
-      break;
-    case "medium":
-      priorityColor = "ffbd44";
-      break;
-    case "high":
-      priorityColor = "ff605c";
-      break;
-  }
-
   const saveChanges = () => {
     let editedToDo = {
       title: toDoTitle,
@@ -76,7 +63,7 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
         className="flex flex-row items-center cursor-pointer rounded-xl py-2 pl-5 hover:bg-[#d3d3d379]"
       >
         <div
-          className={`border-2 rounded-full border-[#${priorityColor}] h-3 w-3 mr-2`}
+          className={`border-2 rounded-full ${toDoPriority == 'low' ? 'border-[#00ca4e]' : toDoPriority == 'medium' ? 'border-[#ffbd44]' : 'border-[#ff605c]'} h-3 w-3 mr-2`}
         ></div>
         {deleting ? (
           <span className="flex items-center">
@@ -118,7 +105,7 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
       </div>
       {open && (
         <div
-          className={`p-3 text-sm bg-white rounded-xl z-10 border-[2px] min-h-[220px] ml-[2px] mt-1 w-[310px] absolute border-[#${priorityColor}] flex flex-col justify-between border-opacity-50 text-justify`}
+          className={`p-3 text-sm bg-white rounded-xl z-10 border-[2px] min-h-[220px] ml-[2px] mt-1 w-[85%] absolute ${toDoPriority == 'low' ? 'border-[#00ca4e]' : toDoPriority == 'medium' ? 'border-[#ffbd44]' : 'border-[#ff605c]'} flex flex-col justify-between border-opacity-50 text-justify xl:w-[90%]`}
         >
           <div className="absolute flex w-15 right-2 top-1">
             <svg
@@ -155,7 +142,7 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
               }}
             ></textarea>
           ) : (
-            <p className="mt-4">{toDoDesc}</p>
+            <p className="mt-4 w-[100%] max-h-[180px] break-words overflow-y-auto">{toDoDesc}</p>
           )}
           <div>
             Due date:{" "}
@@ -173,9 +160,9 @@ const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
             )}
           </div>
           {editing && (
-            <div className="mt-5 flex">
+            <div className="mt-5 flex flex-col lg:flex-col">
               Priority:
-              <div className="flex w-[85%] justify-center items-center gap-2">
+              <div className="flex w-[85%] justify-center items-center gap-1 sm:gap-2">
                 <label>Low</label>
                 <input
                   type="radio"

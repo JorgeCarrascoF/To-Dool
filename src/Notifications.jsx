@@ -10,7 +10,6 @@ const Notifications = () => {
   } = useContext(ProjectsContext);
 
   const deleteNotification = (id) => {
-    console.log(id);
     let newNotifications = notifications.filter((note) => note.id !== id);
     setNotifications(newNotifications);
   };
@@ -19,7 +18,7 @@ const Notifications = () => {
     <>
       {notificationsOpen && (
         <div
-          className={`fixed z-20 shadow-lg right-2 top-2 w-[300px] h-fit pb-4 bg-white rounded-lg items-center select-none flex flex-col`}
+          className={`fixed z-20 shadow-lg right-2 top-2 w-[280px] sm:w-[300px] h-fit pb-4 bg-white rounded-lg items-center select-none flex flex-col`}
         >
           <svg
             onClick={()=>{setNotificationsOpen(false)}}
@@ -40,7 +39,7 @@ const Notifications = () => {
                 return (
                   <div
                     key={notification.id}
-                    className={`w-full flex text-black flex-row justify-between pb-4 items-center`}
+                    className={`w-full flex text-black mt-1 flex-row justify-between items-center`}
                   >
                     <div className="flex flex-row items-center">
                       <svg

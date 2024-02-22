@@ -17,9 +17,9 @@ if (!projectsArray) {
       id: randomID(),
       toDos: [
         {
-          title: "Default To-Do",
-          desc: "This is a default To-Do",
-          date: new Date().getTime(),
+          title: "Welcome to To-Dool",
+          desc: "To create a To-Do, click on the Add To-Do button. To create a new project, open the menu on the top left corner and click on create new project",
+          date: new Date().toLocaleDateString(),
           priority: "low",
           ToDoID: randomID(),
         },
@@ -73,7 +73,6 @@ function App() {
           let newNotifications = notifications;
           newNotifications.push(notification);
           setNotifications(newNotifications);
-          console.log('notification added')
         }
       }
     }

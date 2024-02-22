@@ -10,14 +10,16 @@ const Project = ({ project }) => {
 
   const [newToDoName, setNewToDoName] = useState("");
   const [newToDoDesc, setNewToDoDesc] = useState("");
-  const [newToDoDate, setNewToDoDate] = useState(Date.now());
+  const [newToDoDate, setNewToDoDate] = useState(new Date().toISOString().split("T")[0]);
   const [newToDoPriority, setNewToDoPriority] = useState("low");
+
+
+  const [wrongData, setWrongData] = useState(false);
 
   const deleteProject = () => {
     let newProjects = [];
     for (let pro of projects) {
       if (pro.id !== id) {
-        console.log(pro.id, id)
         newProjects.push(pro);
       }
     }
@@ -26,25 +28,34 @@ const Project = ({ project }) => {
   };
 
   const addNewToDo = () => {
-    let newToDo = {
-      title: newToDoName,
-      desc: newToDoDesc,
-      date: newToDoDate,
-      priority: newToDoPriority,
-      toDoID: randomID(),
-    };
-    projects.map((pro) => {
-      if (pro.id === id) {
-        pro.toDos.push(newToDo);
-      }
-    });
-    setProjects([...projects]);
-    setAddingToDo(false);
-  }
-
+    if (newToDoName == "") {
+      setWrongData(true);
+    } else {
+      console.log(newToDoDate)
+      let newToDo = {
+        title: newToDoName,
+        desc: newToDoDesc,
+        date: newToDoDate,
+        priority: newToDoPriority,
+        toDoID: randomID(),
+      };
+      projects.map((pro) => {
+        if (pro.id === id) {
+          pro.toDos.push(newToDo);
+        }
+      });
+      setProjects([...projects]);
+      setAddingToDo(false);
+      setNewToDoName("")
+      setNewToDoDesc("")
+      setNewToDoDate(new Date().toISOString().split("T")[0])
+      setNewToDoPriority('low')
+      setWrongData(false)
+    }
+  };
 
   return (
-    <div className="w-[340px] relative shadow-md  h-[420px] bg-white rounded-lg items-center select-none flex flex-col">
+    <div className="w-[90%] relative shadow-md  h-[420px] bg-white rounded-lg items-center select-none flex flex-col sm:w-[75%] md:w-[48%] lg:w-[32%] xl:w-[24%] 2xl:w-[19%]">
       <h1 className="text-xl mt-2 py-2 text-black border-b-2 w-[90%] mb-3">
         {name}
       </h1>
@@ -52,6 +63,7 @@ const Project = ({ project }) => {
         <svg
           className="h-5 w-5"
           onClick={() => {
+            setAddingToDo(false);
             setDeleting(true);
           }}
           fill="#868686"
@@ -63,7 +75,7 @@ const Project = ({ project }) => {
         </svg>
       </div>
       {deleting ? (
-        <div className="text-black w-[100%] p-4 items-center flex flex-col pb-3">
+        <div className="text-black w-[100%] mt-5  p-4 items-center flex flex-col pb-3">
           <span className="font-semibold mb-2">
             Are you sure you want to delete {name} ?
           </span>
@@ -92,67 +104,109 @@ const Project = ({ project }) => {
         </div>
       ) : (
         <div className="w-[100%] items-center flex flex-col overflow-y-auto pb-3">
-          {!addingToDo && toDos.map((item, index) => (
-            <ToDo
-              projectID={id}
-              title={item.title}
-              desc={item.desc}
-              date={item.date}
-              priority={item.priority}
-              toDoID={item.toDoID}
-              key={index}
-            ></ToDo>
-          ))}
+          {!addingToDo &&
+            toDos.map((item, index) => (
+              <ToDo
+                projectID={id}
+                title={item.title}
+                desc={item.desc}
+                date={item.date}
+                priority={item.priority}
+                toDoID={item.toDoID}
+                key={index}
+              ></ToDo>
+            ))}
         </div>
       )}
       {addingToDo && (
         <div className="w-[80%] flex flex-col items-center h-fit text-black mb-4">
           <div className="mt-2 text-black bg-grey w-[100%]">
-            <label className="">Title:</label> 
-            <input onChange={(e)=>{setNewToDoName(e.target.value)}} type="text" className=" ml-4 px-2 border-2 w-[60%] rounded-xl"></input>
+            <label className="">Title:</label>
+            <input
+              onChange={(e) => {
+                setNewToDoName(e.target.value);
+              }}
+              type="text"
+              className=" ml-4 px-2 border-2 w-[60%] rounded-xl"
+            ></input>
           </div>
           <div className="mt-2 text-black bg-grey w-[100%]">
             <label className="">Desc</label>
-            <input onChange={(e)=>{setNewToDoDesc(e.target.value)}} type="text" className=" ml-4 px-2 border-2 w-[60%] rounded-xl"></input>
+            <input
+              onChange={(e) => {
+                setNewToDoDesc(e.target.value);
+              }}
+              type="text"
+              className=" ml-4 px-2 border-2 w-[60%] rounded-xl"
+            ></input>
           </div>
           <div className="mt-2 text-black bg-grey w-[100%]">
             <label className="">Date</label>
-            <input onChange={(e)=>{setNewToDoDate(e.target.value)}} type="date" className=" ml-4 pl-4 pr-3 border-2 w-[60%] rounded-xl"></input>
+            <input
+              onChange={(e) => {
+                setNewToDoDate(e.target.value);
+              }}
+              type="date"
+              value={newToDoDate}
+              className=" ml-4 pl-4 pr-3 border-2 w-[60%] rounded-xl lg:pl-2 lg:pr-1"
+            ></input>
           </div>
           <div className="mt-5 flex flex-col items-start">
             <label>Priority:</label>
             <div className="flex ml-8 justify-center items-center gap-2">
               <label>Low</label>
-              <input onClick={()=> {setNewToDoPriority('low')}}
+              <input
+                onClick={() => {
+                  setNewToDoPriority("low");
+                }}
                 type="radio"
                 className="accent-[#00ca4e] cursor-pointer"
                 checked={newToDoPriority == "low"}
               ></input>
               <label>Medium</label>
-              <input onClick={()=> {setNewToDoPriority('medium')}}
+              <input
+                onClick={() => {
+                  setNewToDoPriority("medium");
+                }}
                 type="radio"
                 className="accent-[#ffbd44] cursor-pointer"
                 checked={newToDoPriority == "medium"}
               ></input>
               <label>High</label>
-              <input onClick={()=> {setNewToDoPriority('high')}}
+              <input
+                onClick={() => {
+                  setNewToDoPriority("high");
+                }}
                 type="radio"
                 className="accent-[#ff605c] cursor-pointer"
                 checked={newToDoPriority == "high"}
               ></input>
             </div>
           </div>
-          <button onClick={()=>{addNewToDo()}} className="border-2 mt-2 text-black rounded-xl px-2 py-1">Add</button>
+          <button
+            onClick={() => {
+              addNewToDo();
+            }}
+            className="border-2 border-blue-400 mt-2 text-black rounded-xl px-2 py-1"
+          >
+            Add
+          </button>
+          {wrongData && <span className="text-red-600 mt-2">To-Do needs at least a name!</span>}
         </div>
       )}
-      <button
-        onClick={() => {
-          setAddingToDo(!addingToDo);
-        }}
-        className="border-2 text-black rounded-xl px-2 my-4 py-1"
-      >
-        {!addingToDo ? "Add To-Do" : "Cancel"}
-      </button>
+      {!deleting && (
+        <button
+          onClick={() => {
+            setAddingToDo(!addingToDo);
+            setWrongData(false);
+          }}
+          className={`border-2 text-black ${
+            !addingToDo && "border-blue-400"
+          } rounded-xl px-2 my-4 ${wrongData && 'mt-0'} py-1`}
+        >
+          {!addingToDo ? "Add To-Do" : "Cancel"}
+        </button>
+      )}
     </div>
   );
 };
