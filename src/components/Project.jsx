@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import ToDo from "./ToDo";
-import { ProjectsContext } from "./App";
+import { ProjectsContext } from "../App";
 
 const Project = ({ project }) => {
   const { name, id, toDos } = project;
@@ -31,7 +31,6 @@ const Project = ({ project }) => {
     if (newToDoName == "") {
       setWrongData(true);
     } else {
-      console.log(newToDoDate)
       let newToDo = {
         title: newToDoName,
         desc: newToDoDesc,

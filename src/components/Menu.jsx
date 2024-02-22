@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
-import { ProjectsContext } from "./App";
+import { ProjectsContext } from "../App";
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
@@ -11,6 +11,7 @@ const Menu = () => {
     randomID,
     notifications,
     setNotificationsOpen,
+    setAboutOpen
   } = useContext(ProjectsContext);
 
   const [newProjectName, setNewProjectName] = useState("");
@@ -119,7 +120,7 @@ const Menu = () => {
         {notifications.length > 0 ? `(${notifications.length})` : ""}
       </div>
 
-      <div className="min-w-[200px] select-none hover:bg-[#d3d3d37c] h-4 py-6 pl-[14px] flex items-center">
+      <div onClick={()=>{setAboutOpen(true)}} className="min-w-[200px] select-none hover:bg-[#d3d3d37c] h-4 py-6 pl-[14px] flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 mr-4"

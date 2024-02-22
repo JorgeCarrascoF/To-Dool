@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ProjectsContext } from "./App";
+import { ProjectsContext } from "../App";
 
 const ToDo = ({ projectID, title, desc, date, priority, toDoID }) => {
   const [open, setOpen] = useState(false);
