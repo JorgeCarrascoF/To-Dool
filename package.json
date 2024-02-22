@@ -2,6 +2,7 @@
   "name": "to-dool",
   "private": false,
   "version": "0.0.0",
+  "homepage": "https://jorgecarrascof.github.io/To-Dool/",
   "type": "module",
   "scripts": {
     "dev": "vite",
