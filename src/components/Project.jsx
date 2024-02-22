@@ -79,7 +79,7 @@ const Project = ({ project }) => {
             Are you sure you want to delete {name} ?
           </span>
           <span className="text-gray-400 text-sm font-semibold">
-            Deleting is permanent. You won't be able to recover the To-Do's
+            Deleting is permanent. You won&apos;t be able to recover the To-Do&apos;s
             associated with this project.
           </span>
           <div>
